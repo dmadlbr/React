@@ -1,6 +1,6 @@
 import { Fragment } from "react/jsx-runtime";
 import { ChildComponent } from "./ChildComponent";
-import { useState } from "react";
+import { use, useState } from "react";
 
 export const Sum = () =>{
   const n1 = 10;
@@ -91,6 +91,160 @@ export const Sum = () =>{
     }
 
 
-   
+    //      ---------- Dark and Light --------
+
+    type Mode = "light" | "dark";
+
+    export const DarkLight = () =>{
+      const [value,setValue] = useState<Mode>("light");
+      const handleDarkLightBtn = () =>{
+            if(value == "light"){
+              setValue("dark")
+            }
+            if(value == "dark"){
+              setValue("light")
+            }
+      }
+
+      return <div>
+        <p>{value}</p>
+        <button onClick={handleDarkLightBtn}>{value == "light" ? "dark" : "light"}</button>
+      </div>
+    }
 
 
+
+    // ---------- Name change ---------
+    type Name = "dheema" | "alex";
+  
+    export const Fname = () =>{
+      const [name,setName] = useState<Name>("dheema");
+      const handleName = () =>{
+        if(name == "dheema"){
+           setName("alex")
+        }
+        if(name=="alex"){
+          setName("dheema")
+        }
+       
+      }
+
+      return <div>
+        <p>{name}</p>
+        <button onClick={handleName}>change name</button>
+      </div>
+    }
+
+
+
+// ---------------Login Logout---------
+    type Log = "login" | "logout";
+
+    export const InOut = ( ) =>{
+      const [value, setValue] = useState<Log>("login");
+      const handleValue = () =>{
+        if(value == "login"){
+          setValue("logout")
+        }
+        if(value == "logout"){
+          setValue("login")
+        }
+      }
+
+      return <div>
+        <p>status - {value}
+          <button className="bg-blue-400 ms-5 w-25 p-2 text-white" onClick={handleValue}>{value == "login" ? "logout" : "login"}</button>
+        </p>
+      </div>
+    }
+
+
+    // map
+    export const MappedNumbers =() =>{
+    const [numbers] = useState<number[]>([1,2,3,4,5,6,7,8,9,10,11,12,13]);
+
+    return <div>
+      <p>---------------</p>
+      <p>--------------day 3 of react--------------</p>
+      {
+      numbers.map((number)=>{
+        return <div key ={number}>{number}</div>
+      })
+    }
+    </div>
+    }
+
+      //OR
+    export const MappingNumbers = () =>{
+      const [numbers] = useState<number[]>([1,2,3,4,5,6,7,8,9,10]);
+      const MappingDisplay = numbers.map((number)=>{
+        return <div key={number}>{number}</div>
+      })
+
+      return <div>
+        <p>-----------OR----------</p>
+        <div>{MappingDisplay} </div>
+           <p>----------</p>
+      </div>
+    }
+    
+  //Dark and Light Theme
+  export const Theme = () =>{
+    const [theme,setTheme] =useState<"light" | "dark">("dark");
+      if(theme == "light"){
+        return <div>
+          light theme
+        </div>
+      }
+
+    return <div>
+      dark theme
+    </div>
+  }
+
+          //&&
+  export const ThemeTwo =  () =>{
+    const [theme,setTheme] = useState<"light" | "dark">("light");
+    return <div>
+      <p>-------OR--------</p>
+      {theme} <br />
+      {theme === "light" && "this is light theme"}
+      {theme === "dark" && "this is dark theme"}
+      <p>--------------</p>
+    </div>
+  }
+         //ternary operator
+  export const ThemeThree = () =>{
+    const [theme,setTheme] = useState<"light" | "dark">("light");
+    return <div>
+      {theme}
+      {theme==="light"?<div>this is light mode</div>:<div>this is dark mode</div>}
+      <button className="p-3 w-30 bg-amber-900 text-amber-50 rounded-xl" onClick={()=>{
+        if(theme === "dark"){
+          setTheme("light")
+        }else{
+          setTheme("dark")
+        }
+      }}>TOGGLE</button>
+      <p>-----------------------------------------------------------------------------------------------------</p>
+    </div>
+  }
+
+  //bg change
+  export const Bg = ()=>{
+     const [theme, setTheme] = useState<"light" | "dark">("light");
+     const [className,setClassName] = useState<string>("font-mono uppercase bg-white text-black flex flex-col items-center justify-center h-screen");
+    return (<div className={className}>
+    <button className="p-2 w-40 bg-red-500 text-amber-100 rounded-lg" onClick={()=>{
+     
+      if(theme === "light"){
+        setTheme("dark");
+         setClassName(className.replace("bg-white text-black", "bg-black text-white"));
+      }else{
+         setTheme("light")
+          setClassName(className.replace("bg-black text-white", "bg-white text-black"));
+      }
+    }}>Change BG</button>
+    </div>
+  )
+  }
