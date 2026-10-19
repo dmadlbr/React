@@ -7,6 +7,7 @@ import { Btn } from './App.tsx'
 import { Fname, InOut } from './App.tsx'
 import { Theme,ThemeThree} from './App.tsx'
 import './main.css'
+import { App2 } from './hook.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
     <Fname /> <InOut />
     <MappedNumbers /> <MappingNumbers />
     <Theme /> <ThemeTwo /> <ThemeThree /> <Bg />
+    <App2 />
    
   </StrictMode>,
 )
