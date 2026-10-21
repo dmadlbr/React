@@ -1,5 +1,5 @@
-
-import { useReducer } from "react";
+// --------useReducer()-------------
+import { useReducer, useState } from "react";
 
 type Action = {
     type: 'INCREMENT-1'|'DECREMENT-1'|'RESET-1'|'INCREMENT-2'|'DECREMENT-2'|'RESET-2'
@@ -62,10 +62,81 @@ export const App2 = () =>{
             <button onClick={()=>dispatch({type:"DECREMENT-2"})} className="bg-yellow-500 text-white p-2 rounded-lg w-30">Decrement num2</button>
             <button onClick={()=>dispatch({type:"RESET-2"})} className="bg-red-500 text-white p-2 rounded-lg w-30">Reset num2</button>
         </div>
-        <div className={`bg-${darkMode == "light"? "white":"black"}`} >
+        <div className={`${darkMode == "light"? "bg-white text-red-500":"bg-black text-green-600"}`} >
+            <p>hiiii</p>
             <button className="bg-blue-400 text-white p-2 mt-2 w-30 rounded-lg" onClick={()=>dispatchDarkMode(darkMode == "dark"? "light":"dark")}>{darkMode}</button>
         </div>
     </div>
 
 
+}
+
+
+// -------useEffect()---------
+
+import { useEffect } from "react";
+
+type Product = {
+    title : string;
+    images : string[];
+}
+
+export const App4 = () => {
+
+    const [counter1,setCounter1] = useState<number>(0);
+    const [counter2,setCounter2] = useState<number>(0);
+    const [timer,setTimer] = useState<number>(0);
+    const [product,setProduct] = useState<Product | null>(null);
+    const [productId,setProductId] = useState<number>(1);
+    const [fetching,setFetching] = useState<boolean>(true);
+
+    useEffect(()=>{
+        const interval = setInterval(()=>{
+           setTimer((timer) => timer + 1)
+        },1000)
+        return ()=>{
+            clearInterval(interval);
+        }
+    },[counter1]);
+// whenever COUNTER 1 changes,speed increases by how many times you clicked the counter1 in 1sec
+
+
+    const handleFetch = async() =>{
+        try{
+            const response = await fetch(`https://dummyjson.com/products/${productId}`);
+            const data = await response.json();
+            setProduct(data);
+        }catch(err){
+            return console.log(err);
+        }finally{
+            setFetching(false);
+        }
+
+    }
+
+    useEffect(()=>{
+        handleFetch();
+    },[productId]);
+
+    const randomId = () => Math.floor(Math.random()*194) + 1;
+
+    return <div className=" flex flex-col gap-3 bg-sky-50 p-5 rounded-3xl">
+        <div>
+            <p className="text-pink-500"> Counter 1 : {counter1}</p> 
+            <p className="text-purple-500"> Counter 2 : {counter2}</p>
+        </div>
+         
+        <div>Timer : {timer} </div>
+        <div className="flex justify-center gap-5">
+            <button onClick={()=>setCounter1(counter1 + 1) } className="bg-pink-500 text-white p-3 rounded-lg min-w-20">Counter 1</button>
+            <button onClick={()=>setCounter2(counter2 + 1)} className="bg-purple-500 text-white p-3 rounded-lg min-w-20">Counter 2</button>
+        </div>
+
+        <div className="flex items-center flex-col">
+            <img src={product?.images[0]} alt={product?.title} className="h-50 w-50" />
+            <h2 className="text-35px">{product?.title}</h2>
+            <button onClick={()=>setProductId(randomId())} className="text-[15px] bg-lime-200 text-orange-800 p-2 w-30 rounded-lg">Random Product</button>
+        </div>
+
+    </div>
 }
