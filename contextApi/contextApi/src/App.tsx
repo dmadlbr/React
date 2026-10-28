@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import {createBrowserRouter,type RouteObject} from "react-router";
 import {HomePage} from "./pages/home";
 import {AboutPage} from "./pages/about";
@@ -21,13 +21,15 @@ import { RouterProvider } from "react-router/dom";
 
  const routes = createBrowserRouter(routeData);
 
- type contextValueType =  {global:string}
- export const CounterContext =createContext<contextValueType | null>(null);
+export type ContextValueType = {counter:number,setCounter:React.Dispatch<React.SetStateAction<number>>;}
+//  type contextValueType =  {global:string} sample data's type [before buttons]
+ export const CounterContext =createContext<ContextValueType | null>(null);
 
  export const App = () =>{
 
-    const data = "this is a sample  global data ";
-    return <CounterContext.Provider value={{global:data}}>
+    // const data = "this is a sample  global data ";
+    const [counter,setCounter]=useState(0);
+    return <CounterContext.Provider value={{counter,setCounter}}>
           <RouterProvider router={routes} />
     </CounterContext.Provider>
 
