@@ -133,10 +133,81 @@ export const App4 = () => {
         </div>
 
         <div className="flex items-center flex-col">
-            <img src={product?.images[0]} alt={product?.title} className="h-50 w-50" />
-            <h2 className="text-35px">{product?.title}</h2>
+            {
+            fetching ? <>
+                <div className="h-96 w-96 bg-slate-300/30 rounded-md">
+                    
+                </div>
+                <h1 className="h-4 w-96 bg-slate-300/30 rounded-md"></h1>
+            </> : <>
+                <div className="h-56 w-56">
+                    <img src={product?.images[0]} alt={product?.title} className="h-full w-full" />
+                </div>
+                <h2>Product Title: {product?.title}</h2>
+            </>
+        }
             <button onClick={()=>setProductId(randomId())} className="text-[15px] bg-lime-200 text-orange-800 p-2 w-30 rounded-lg">Random Product</button>
         </div>
 
     </div>
 }
+
+//--------useRef()-----------
+
+        // accessing DOM
+
+    import { useRef } from "react";
+
+    export const RefPage = () =>  {
+
+        const inputRef = useRef<HTMLInputElement | null>(null);
+
+    //     const handleFocus = () => {
+    //     inputRef.current?.focus();
+    //     };
+    //              OR
+
+
+        const handleFocusClick = () => {
+            if(inputRef.current){
+                inputRef.current.focus();           
+                inputRef.current.style.backgroundColor = "black";
+                inputRef.current.style.color = "blue";
+                inputRef.current.style.padding = "4px";
+            }
+        }
+
+
+
+        return <div>
+            <input type="text" ref={inputRef}/>
+            <button onClick={handleFocusClick}>Click to focus</button>
+        </div>
+        
+    }
+
+        //mutable values
+
+        export const MutableValueRefPage = () =>{
+
+            const mutableValueRef = useRef<number>(0);
+            const [render,setRender] = useState<number>(0);
+        
+            const handleValue = () =>{
+                mutableValueRef.current += 1;
+                // console.log(mutableValueRef.current);
+                setRender(render + 1)
+
+            }
+
+
+            return <div>
+                {/* <button onClick={handleValue}>Change value in console</button> */}
+                <span>Value : {mutableValueRef.current} </span>
+                <button onClick={handleValue}> change value </button>
+            </div>
+        }
+
+
+
+        
