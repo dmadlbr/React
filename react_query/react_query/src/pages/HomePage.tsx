@@ -4,7 +4,7 @@ import { api } from "../lib/axios";
 import { Child } from "../components/child";
 
 export const HomePage = () =>{
-    const {data,isLoading,isError} = useQuery({
+    const {data,isLoading,isError,error} = useQuery({
 
         queryKey : ["users"],
         queryFn : async () =>{
@@ -18,20 +18,24 @@ export const HomePage = () =>{
 
     });
 
-    // const {mutate} = useMutation({
-    //     mutationFn : async ()=>{
-    //         const response = await api.post("/users/add",{
-    //             firstName: 'Muhammad',
-    //             lastName: 'Ovi',
-    //             age: 250
-    //         });               
-    //        return response.data; 
-    //     },
-    //     onSuccess: () =>{
-    //         const queryClient = useQueryClient();
-    //         queryClient.in
-    //     }
-    // })
+    const queryClient = useQueryClient();
+
+    const {mutate} = useMutation({
+        mutationFn : async ()=>{
+            const response = await api.post("/users/add",{
+                firstName: 'Muhammad',
+                lastName: 'Ovi',
+                age: 20
+            });               
+           return response.data; 
+        },
+        onSuccess: (newUser) =>{
+            console.log(newUser);
+            return queryClient.invalidateQueries({
+                queryKey : ["users"]
+            })
+        }
+    })
 
 
 
@@ -40,7 +44,7 @@ export const HomePage = () =>{
     }
 
     if(isError){
-        return <div>Error</div>
+        return <div>{error.message}</div>
     }
 
     return <div>
@@ -50,6 +54,10 @@ export const HomePage = () =>{
 
         {data?.users[0].firstName}
         <br />
+        <button onClick={()=>mutate()}>ADD NEW USER</button>
+        {data?.users.map(user => {
+            return <div key={user.id}>{user.firstName} {user.university}</div>
+        })}
          <Child />
     </div>
 }

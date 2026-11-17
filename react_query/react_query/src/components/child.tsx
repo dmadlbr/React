@@ -28,6 +28,6 @@ export const Child = () => {
         <div className="text-center my-5">
             <h1 className="text-4xl font-bold underline">Tanstack React Query</h1>
         </div>
-        {data?.users[0].firstName}
+        {data?.users[10].firstName}
     </div>
 };
